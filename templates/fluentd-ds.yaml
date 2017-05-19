@@ -31,9 +31,9 @@ spec:
         command: ["fluentd", "-c", "/fluentd/etc/fluentd.conf", "-p", "/fluentd/plugins"]
         env:
         - name: FLUENTD_CONFIG
-        {{- if .Values.aggregator.enabled -}}
+        {{- if .Values.aggregator.enabled }}
           value: fluentd-forwarder.conf
-        {{ else }}
+        {{- else }}
           value: fluentd-standalone.conf
         {{- end }}
 {{- if and (not .Values.aggregator.enabled) (eq .Values.output.type "cloudwatch") -}}
