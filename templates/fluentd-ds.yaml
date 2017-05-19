@@ -20,6 +20,9 @@ spec:
         app: {{ template "fluentd.fullname" . }}
         component: {{ template "collector.fullname" . }}
         release: "{{ .Release.Name }}"
+      annotations:
+        {{ template "fluentd.fullname" . }}-config/sha256sum: {{ include (print $.Template.BasePath "/fluentd-configmap.yaml") . | sha256sum }}
+        {{ template "fluentd.fullname" . }}-secrets/sha256sum: {{ include (print $.Template.BasePath "/fluentd-secrets.yaml") . | sha256sum }}
     spec:
       containers:
       - name: fluentd
