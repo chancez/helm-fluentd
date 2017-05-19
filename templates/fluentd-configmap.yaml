@@ -93,7 +93,7 @@ data:
 
       <server>
         name fluentd-aggregator
-        host fluentd-aggregator.logging.svc.cluster.local
+        host {{ template "aggregator.fullname" . }}
         weight 60
       </server>
     </match>

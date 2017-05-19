@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ template "fluentd.fullname" . }}
+  name: {{ template "collector.fullname" . }}
   labels:
     app: {{ template "fluentd.fullname" . }}
     chart: "{{.Chart.Name}}-{{.Chart.Version}}"
-    component: "{{ .Values.collector.name }}"
+    component: {{ template "collector.fullname" . }}
     heritage: "{{ .Release.Service }}"
     release: "{{ .Release.Name }}"
 spec:
@@ -13,7 +13,7 @@ spec:
   clusterIP: None
   selector:
     app: {{ template "fluentd.fullname" . }}
-    component: "{{ .Values.collector.name }}"
+    component: {{ template "collector.fullname" . }}
   ports:
   # Exposes Prometheus metrics
   - name: prometheus-metrics

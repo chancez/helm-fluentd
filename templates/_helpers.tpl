@@ -2,25 +2,23 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "fluentd.name" -}}
+{{- define "name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
-{{/*
-Create a default fully qualified app name.
-We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
-*/}}
 {{- define "fluentd.fullname" -}}
-{{- $name := default "fluentd" .Values.nameOverride -}}
+{{- $name := default .Chart.Name .Values.nameOverride -}}
 {{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
-{{/*
-Create a fully qualified server name.
-We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
-*/}}
-{{- define "fluentd.aggregator.fullname" -}}
-{{- printf "%s-%s" .Release.Name "fluentd-aggregator" | trunc 63 | trimSuffix "-" -}}
+{{- define "collector.fullname" -}}
+{{- $name := default "collector" .Values.collector.nameOverride -}}
+{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
+{{- define "aggregator.fullname" -}}
+{{- $name := default "aggregator" .Values.aggregator.nameOverride -}}
+{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
 {{- define "aws.credentials.env" }}

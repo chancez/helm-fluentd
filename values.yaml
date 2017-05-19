@@ -15,23 +15,20 @@ output:
   loggly:
     token: ""
 
-
 collector:
-  name: fluentd-collector
   image:
     repository: quay.io/coreos/fluentd-kubernetes
     tag: v0.12-debian-elasticsearch
   resources:
     limits:
       cpu: 100m
-      memory: 128Mi
+      memory: 500Mi
     requests:
       cpu: 100m
-      memory: 128Mi
+      memory: 250Mi
 
 aggregator:
   enabled: false
-  name: fluentd-aggregator
   replicas: 2
   image:
     repository: quay.io/coreos/fluentd-kubernetes

@@ -1,7 +1,7 @@
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRole
 metadata:
-  name: fluentd-read
+  name: {{ template "fluentd.fullname" . }}-read
   labels:
     app: {{ template "fluentd.fullname" . }}
     chart: "{{.Chart.Name}}-{{.Chart.Version}}"

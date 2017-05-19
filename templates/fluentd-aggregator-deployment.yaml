@@ -2,11 +2,11 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: {{ template "fluentd.aggregator.fullname" . }}
+  name: {{ template "aggregator.fullname" . }}
   labels:
     app: {{ template "fluentd.fullname" . }}
     chart: "{{.Chart.Name}}-{{.Chart.Version}}"
-    component: "{{ .Values.aggregator.name }}"
+    component: {{ template "aggregator.fullname" . }}
     heritage: "{{ .Release.Service }}"
     release: "{{ .Release.Name }}"
 spec:
@@ -22,11 +22,11 @@ spec:
     metadata:
       labels:
         app: {{ template "fluentd.fullname" . }}
-        component: "{{ .Values.aggregator.name }}"
+        component: {{ template "aggregator.fullname" . }}
         release: "{{ .Release.Name }}"
     spec:
       containers:
-      - name: {{ template "fluentd.fullname" . }}
+      - name: fluentd
         image: "{{ .Values.aggregator.image.repository }}:{{ .Values.aggregator.image.tag }}"
         imagePullPolicy: {{ .Values.aggregator.image.pullPolicy }}
         command: ["fluentd", "-c", "/fluentd/etc/fluentd.conf", "-p", "/fluentd/plugins"]
@@ -66,8 +66,8 @@ spec:
         configMap:
           name: {{ template "fluentd.fullname" . }}-config
       - name: fluentd-secrets
-        secretName:
-          name: {{ template "fluentd.fullname" . }}-secrets
+        secret:
+          secretName: {{ template "fluentd.fullname" . }}-secrets
       # Give the aggregator ample time to flush it's logs
       terminationGracePeriodSeconds: 160
       serviceAccountName: {{ .Values.serviceAccountName }}

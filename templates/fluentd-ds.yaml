@@ -1,11 +1,11 @@
 apiVersion: extensions/v1beta1
 kind: DaemonSet
 metadata:
-  name: {{ template "fluentd.fullname" . }}
+  name: {{ template "collector.fullname" . }}
   labels:
     app: {{ template "fluentd.fullname" . }}
     chart: "{{.Chart.Name}}-{{.Chart.Version}}"
-    component: "{{ .Values.collector.name }}"
+    component: {{ template "collector.fullname" . }}
     heritage: "{{ .Release.Service }}"
     release: "{{ .Release.Name }}"
 spec:
@@ -18,11 +18,11 @@ spec:
     metadata:
       labels:
         app: {{ template "fluentd.fullname" . }}
-        component: "{{ .Values.collector.name }}"
+        component: {{ template "collector.fullname" . }}
         release: "{{ .Release.Name }}"
     spec:
       containers:
-      - name: {{ template "fluentd.fullname" . }}
+      - name: fluentd
         image: "{{ .Values.collector.image.repository }}:{{ .Values.collector.image.tag }}"
         imagePullPolicy: {{ .Values.collector.image.pullPolicy }}
         command: ["fluentd", "-c", "/fluentd/etc/fluentd.conf", "-p", "/fluentd/plugins"]
@@ -81,8 +81,8 @@ spec:
         configMap:
           name: {{ template "fluentd.fullname" . }}-config
       - name: fluentd-secrets
-        secretName:
-          name: {{ template "fluentd.fullname" . }}-secrets
+        secret:
+          secretName: {{ template "fluentd.fullname" . }}-secrets
       terminationGracePeriodSeconds: 60
       serviceAccountName: {{ .Values.serviceAccountName }}
       tolerations:
