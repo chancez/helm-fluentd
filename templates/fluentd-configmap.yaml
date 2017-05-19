@@ -272,8 +272,9 @@ data:
       #       they don't always come one after the other for a given query.
       format1 /^(?<time>\S+) AUDIT:(?: (?:id="(?<id>(?:[^"\\]|\\.)*)"|ip="(?<ip>(?:[^"\\]|\\.)*)"|method="(?<method>(?:[^"\\]|\\.)*)"|user="(?<user>(?:[^"\\]|\\.)*)"|groups="(?<groups>(?:[^"\\]|\\.)*)"|as="(?<as>(?:[^"\\]|\\.)*)"|asgroups="(?<asgroups>(?:[^"\\]|\\.)*)"|namespace="(?<namespace>(?:[^"\\]|\\.)*)"|uri="(?<uri>(?:[^"\\]|\\.)*)"|response="(?<response>(?:[^"\\]|\\.)*)"|\w+="(?:[^"\\]|\\.)*"))*/
       time_format %FT%T.%L%Z
-      path /var/log/kubernetes/kube-apiserver-audit.log
-      pos_file /var/log/kube-apiserver-audit.log.pos
+      {{- $auditLogFilePath := default "/var/log/kubernetes/kube-apiserver-audit.log" .Values.apiServerAuditLogPathOverride }}
+      {{ printf "path %s" $auditLogFilePath }}
+      {{ printf "pos_file %s.pos" $auditLogFilePath }}
       tag kube-apiserver-audit
     </source>
 
