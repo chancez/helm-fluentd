@@ -1,0 +1,47 @@
+output:
+  type: elasticsearch
+  elasticsearch:
+    host: elasticsearch.elasticsearch.svc.cluster.local
+    port: 9200
+    scheme: http
+    sslVerify: false
+  cloudwatch:
+    accessKey: ""
+    secretKey: ""
+    region: ""
+    logGroupName: "fluentd-kubernetes"
+  logentries:
+    token: ""
+  loggly:
+    token: ""
+
+
+collector:
+  name: fluentd-collector
+  image:
+    repository: quay.io/coreos/fluentd-kubernetes
+    tag: v0.12-debian-elasticsearch
+  resources:
+    limits:
+      cpu: 100m
+      memory: 128Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+
+aggregator:
+  enabled: false
+  name: fluentd-aggregator
+  replicas: 2
+  image:
+    repository: quay.io/coreos/fluentd-kubernetes
+    tag: v0.12-debian-elasticsearch
+  resources:
+    limits:
+      cpu: 2
+      memory: 1024Mi
+    requests:
+      cpu: 1
+      memory: 250Mi
+
+serviceAccountName: fluentd

@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "fluentd.fullname" . }}
+  labels:
+    app: {{ template "fluentd.fullname" . }}
+    chart: "{{.Chart.Name}}-{{.Chart.Version}}"
+    component: "{{ .Values.collector.name }}"
+    heritage: "{{ .Release.Service }}"
+    release: "{{ .Release.Name }}"
+spec:
+  type: ClusterIP
+  clusterIP: None
+  selector:
+    app: {{ template "fluentd.fullname" . }}
+    component: "{{ .Values.collector.name }}"
+  ports:
+  # Exposes Prometheus metrics
+  - name: prometheus-metrics
+    port: 24231
+    targetPort: prom-metrics
+    protocol: TCP
+  # Can be accessed using "kubectl proxy" at:
+  # http://127.0.0.1:8001/api/v1/proxy/namespaces/kube-system/services/fluentd:monitor-agent/api/plugins.json
+  - name: monitor-agent
+    port: 24220
+    targetPort: monitor-agent
+    protocol: TCP

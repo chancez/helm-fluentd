@@ -1,0 +1,4 @@
+apiVersion: v1
+description: Deploys a logging agent to collect your containers logs.
+name: fluentd
+version: 0.1.0

@@ -1,0 +1,37 @@
+{{- if .Values.aggregator.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "fluentd.aggregator.fullname" . }}
+  labels:
+    app: {{ template "fluentd.fullname" . }}
+    chart: "{{.Chart.Name}}-{{.Chart.Version}}"
+    component: "{{ .Values.aggregator.name }}"
+    heritage: "{{ .Release.Service }}"
+    release: "{{ .Release.Name }}"
+spec:
+  type: ClusterIP
+  selector:
+    app: {{ template "fluentd.fullname" . }}
+    component: "{{ .Values.aggregator.name }}"
+  ports:
+  - name: fluentd-input
+    port: 24224
+    targetPort: fwd-input
+    protocol: TCP
+  - name: fluentd-input-udp
+    port: 24224
+    targetPort: fwd-input-udp
+    protocol: UDP
+  # Exposes Prometheus metrics
+  - name: prometheus-metrics
+    port: 24231
+    targetPort: prom-metrics
+    protocol: TCP
+  # Can be accessed using "kubectl proxy" at:
+  # http://127.0.0.1:8001/api/v1/proxy/namespaces/kube-system/services/fluentd-aggregator:monitor-agent/api/plugins.json
+  - name: monitor-agent
+    port: 24220
+    targetPort: monitor-agent
+    protocol: TCP
+{{- end }}
