@@ -290,6 +290,7 @@ data:
       port {{ .Values.output.elasticsearch.port }}
       scheme {{ .Values.output.elasticsearch.scheme }}
       ssl_verify {{ .Values.output.elasticsearch.sslVerify }}
+      reload_connections {{ .Values.output.elasticsearch.reloadConnections }}
 
       {{- if .Values.output.elasticsearch.user }}
       user {{ .Values.output.elasticsearch.user }}

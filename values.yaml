@@ -5,6 +5,7 @@ output:
     port: 9200
     scheme: http
     sslVerify: false
+    reloadConnections: true
   cloudwatch:
     accessKey: ""
     secretKey: ""
